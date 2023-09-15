@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+
+from subprocess import check_output
+
+master = "amixer sget Master"
+capture = "amixer sget Capture"
+
+mas_res = check_output(master.split(' ')).decode('utf-8')
+cap_res = check_output(capture.split(' ')).decode('utf-8')
+
+mas_line, cap_line = [i for i in mas_res.split('\n') if '[' in i][0], [i for i in cap_res.split('\n') if '[' in i][0]
+
+mas_perc, cap_perc = [i for i in mas_line.split(' ') if '%' in i][0], [i for i in cap_line.split(' ') if '%' in i][0]
+
+sound, mute = "🔊", "🔇"
+out = ''
+
+if "[on]" in mas_line: out += sound
+elif "[off]" in mas_line: out += mute
+
+out += f" Mst: {mas_perc} "
+
+if "[on]" in cap_line: out += sound
+elif "[off]" in cap_line: out += mute
+
+out += f" Cap: {cap_perc}"
+
+print(out)

@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+
+from subprocess import check_output
+
+address = "8.8.8.8"
+
+rescmd = 'resolvectl'
+pingcmd = f'ping -c 1 {address}'
+
+resout = check_output(rescmd.split(' ')).decode('utf-8')
+pingout = check_output(pingcmd.split(' ')).decode('utf-8')
+
+dns = [i for i in resout.split('\n') if 'Current DNS' in i][0].replace("  Current DNS Server: ", '')
+ping = [i for i in pingout.split('\n') if '64 bytes' in i][0]
+
+ping = "".join(ping.split(' ')[-2:])
+
+print(f"🌐 {dns} : {ping}")
+

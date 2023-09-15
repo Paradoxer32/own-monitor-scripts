@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+
+from subprocess import check_output
+
+cmd = "upower -i /org/freedesktop/UPower/devices/battery_BAT0"
+
+out = check_output(cmd.split(' ')).decode('utf-8')
+
+status = [i for i in out.split('\n') if 'state' in i or 'time' in i or 'percentage' in i]
+
+state, time, perc = status[0], status[1], status[2]
+
+opt = ''
+
+if 'discharging' in state:
+    opt += '🔋'
+    time = time.replace("    time to empty:       ", '')
+
+elif 'charging' in state:
+    opt += '🔌'
+    time = time.replace("    time to full:       ", '')
+
+else:
+    opt += "?!"
+
+perc = perc.replace("    percentage:          ", '')
+opt += f"{time} {perc}"
+
+print(opt)
+

@@ -1,0 +1,18 @@
+#!/usr/bin/env python
+
+from subprocess import check_output
+
+command = 'free'
+
+res = check_output(command.split(' ')).decode('utf-8')
+
+opt = [i for i in res.split('\n') if 'Mem' in i or 'Swap' in i]
+
+mem = opt[0]
+swp = opt[1]
+
+mem = [i for i in mem.split(' ') if i]
+swp = [i for i in swp.split(' ') if i]
+
+print(f"🧠 Mem: {'%.2f' % (int(mem[2]) / (1024 ** 2))}/{'%.2f' % (int(mem[1]) / (1024 ** 2))} Swp: {'%.2f' % (int(swp[2]) / (1024 ** 2))}/{'%.2f' % (int(swp[1]) / (1024 ** 2))}")
+

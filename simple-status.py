@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from subprocess import check_output
+from psutil import cpu_percent
 
 addr = '8.8.8.8'
 
@@ -33,5 +34,6 @@ if '[off]' in audio_status:
 elif '[on]' in audio_status:
     audio_tog = ""
 
-print(f"{network_status} {audio_tog} {audio_perc} 󰁹{power_status}")
+cpu_status = str(cpu_percent()) + "%" 
 
+print(f" {cpu_status} {network_status} {audio_tog} {audio_perc} 󰁹 {power_status}")
